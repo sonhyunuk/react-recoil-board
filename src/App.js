@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Main from './container/Main';
 import Viewer from './container/Viewer';

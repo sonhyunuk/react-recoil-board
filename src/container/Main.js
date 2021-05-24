@@ -3,20 +3,27 @@ import Header from '../component/Header'
 import Gnb from '../component/Gnb'
 import Footer from '../component/Footer'
 import axios from 'axios';
+import WebtoonList from '../component/WebtoonList';
 
-const Main = () => {
-    const [webtoonData, setWebtoonData] = useState();
+const Main = (props) => {
+    const [webtoonList, setWebtoonList] = useState([]);
+    const [dday, setDday] = useState('mon');
 
     useEffect(() => {
-        axios('http://localhost:3001/api/')
-            .then(res => setWebtoonData(res.data))
-            
-    },[]);
+        axios.get('dummy/webtoon_list.json')
+            .then(res => setWebtoonList(res.data.webtoonList))
+            .catch(error => console.log(error))
+            console.log(props);
+
+    }, []);
     return (
         <div>
             <Header />
-            {webtoonData}
             <Gnb />
+            <WebtoonList list={webtoonList.filter(webtoon => (
+                dday === webtoon.day
+            ))
+            } />
             <Footer />
         </div>
     );
