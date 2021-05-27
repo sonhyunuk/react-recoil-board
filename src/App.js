@@ -1,20 +1,18 @@
-import { BrowserRouter, Route } from 'react-router-dom';
-import Main from './container/Main';
-import Viewer from './container/Viewer';
-import WebtoonHome from './container/WebtoonHome';
-import './App.css';
-
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import CreatePage from './container/CreatePage';
+import ListPage from './container/ListPage';
+import UpdatePage from './container/UpdatePage';
+import ReadPage from './container/ReadPage';
 const App = () => {
-
- 
-
   return (
     <BrowserRouter>
-      <div>
-        <Route exact path="/" component={Main}></Route>
-        <Route path="/webtoon/:webtoonId" component={WebtoonHome}></Route>
-        <Route path="/viewer/:episodeId" component={Viewer}></Route>
-      </div>
+      <Switch>
+        <Route exact path="/" component={ListPage}></Route>
+        <Route exact path="/board/create" component={CreatePage}></Route>
+        <Route exact path="/board/update" component={UpdatePage}></Route>
+        <Route exact path="/board/read" component={ReadPage}></Route>
+      </Switch>
     </BrowserRouter>
   )
 }
