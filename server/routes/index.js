@@ -15,6 +15,7 @@ router.get('/board', (req, res) => {
     conn.query('SELECT * FROM tb_board', (err, result, fields) => {
         if (err)
             console.log(err);
+
         res.json(result);
     })
 });
@@ -52,6 +53,7 @@ router.put('/board/:boardNo/:viewCount', (req, res) => {
     conn.query("UPDATE tb_board SET views = ? + 1 WHERE  `no` = ?", reqData, (err, result, field) => {
         if (err)
             console.log(err)
+
         res.json(result);
     })
 })

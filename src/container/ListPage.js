@@ -1,8 +1,10 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { boardListState } from '../recoil/states';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { boardListState, filterBoardListState } from '../recoil/states';
+
 import BoardItem from '../component/BoardItem';
+import BoardFilter from '../component/BoardFilter';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,6 +16,7 @@ import { Link } from 'react-router-dom';
 
 const ListPage = () => {
     const [boardList, setBoardList] = useRecoilState(boardListState);
+    const filterBoardList = useRecoilValue(filterBoardListState);
 
 
     useEffect(() => {
@@ -30,6 +33,7 @@ const ListPage = () => {
 
     return (
         <>
+            <BoardFilter />
             <Table>
                 <TableHead>
                     <TableRow>
@@ -42,12 +46,12 @@ const ListPage = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {boardList === '' ? (
+                    {filterBoardList === '' ? (
                         <TableRow>
                             <TableCell rowSpan="3">loading</TableCell>)
                         </TableRow>
                     ) : (
-                        boardList.map((data) => (
+                        filterBoardList.map((data) => (
                             <BoardItem key={data.no} item={data} />
                         ))
                     )
