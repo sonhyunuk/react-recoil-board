@@ -21,7 +21,7 @@ export const filterBoardListState = selector({
         const filter = get(boardListFilterState);
 
         if (filter.boardFilter === '') {
-            console.log(boardList);
+            console.log(boardList); 
             return boardList;
         } else {
             return boardList.filter((item) => item.title.toLowerCase().includes(filter.boardFilter));

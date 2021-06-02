@@ -23,9 +23,9 @@ const ListPage = () => {
         setBoardListState();
     }, [])
 
-    const setBoardListState = async () => {
+    const setBoardListState = () => {
         console.log(boardList);
-        await axios.get('http://localhost:3001/api/board')
+        axios.get('http://localhost:3001/api/board')
             .then(res => setBoardList(res.data))
 
     }
