@@ -15,14 +15,4 @@ router.use('/api',api.routes());
 
 app.use(router.routes());
 
-/* app.use((ctx) =>{ctx.body = 'ㅎㅎ'})
-app.use((ctx) =>{ctx.body = 'ㅎㅎ'}) */
-
-/* const app = express();
-app.use(express.json());
-app.use(express.urlencoded({extended : false}));
-app.use(cors());
-app.use('/api', api);
- */
-
 app.listen(3001, () => console.log('listing'));

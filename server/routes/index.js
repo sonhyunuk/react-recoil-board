@@ -14,7 +14,7 @@ router.get('/board', async (ctx) => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
-            const [rows] = await connection.query('SELECT * FROM tb_board');
+            const [rows] = await connection.query('SELECT * FROM tb_board')
             connection.release();
             ctx.body = rows;
         } catch (err) {
@@ -44,7 +44,8 @@ router.delete('/board/:deleteNo', async (ctx) => {
 });
 
 router.post('/board', async (ctx) => {
-    let reqData = [ctx.request.body.boardTitle, ctx.request.body.boardContent];
+    const { boardTitle, boardContent } = ctx.request.body;
+    let reqData = [boardTitle, boardContent];
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
@@ -60,7 +61,8 @@ router.post('/board', async (ctx) => {
 });
 
 router.put('/board', async (ctx) => {
-    let reqData = [ctx.request.body.boardTitle, ctx.request.body.boardContent, ctx.request.body.boardNo];
+    const {boardTitle,boardContent,boardNo} = ctx.request.body;
+    let reqData = [boardTitle, boardContent, boardNo];
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
