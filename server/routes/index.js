@@ -1,97 +1,33 @@
 const Router = require('@koa/router');
 const router = new Router();
-const mysql = require('mysql2/promise');
-
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'board',
-    connectionLimit: 10
-});
+const pool = require('../lib/db');
+const topic = require('../lib/topic');
 
 router.get('/board', async (ctx) => {
-    try {
-        const connection = await pool.getConnection(async conn => conn);
-        try {
-            const [rows] = await connection.query('SELECT * FROM tb_board')
-            connection.release();
-            ctx.body = rows;
-        } catch (err) {
-            console.log('Query Error');
-            connection.release();
-        }
-    } catch (err) {
-        console.log('DB Error');
-    }
+    let result = await topic.boardList();
+    ctx.body = result;
 })
 
 router.delete('/board/:deleteNo', async (ctx) => {
-    let deleteNo = parseInt(ctx.params.deleteNo);
-    try {
-        const connection = await pool.getConnection(async conn => conn);
-        try {
-            const [rows] = await connection.query("DELETE FROM tb_board WHERE `no` = ?", deleteNo);
-            connection.release();
-            ctx.body = rows;
-        } catch (err) {
-            console.log('Query Error');
-            connection.release();
-        }
-    } catch (err) {
-        console.log('DB Error');
-    }
+    let result = await topic.boardDelete(ctx);
+    ctx.body = result;
+
 });
 
 router.post('/board', async (ctx) => {
-    const { boardTitle, boardContent } = ctx.request.body;
-    let reqData = [boardTitle, boardContent];
-    try {
-        const connection = await pool.getConnection(async conn => conn);
-        try {
-            const [rows, field] = await connection.query("INSERT INTO tb_board(`no`, title, content, id, views) VALUES (NULL, ?, ?, 'id001', 0)", reqData);
-            ctx.body = "Success"
-        } catch (err) {
-            console.log('Query Error');
-            connection.release();
-        }
-    } catch (err) {
-        console.log('DB Error');
-    }
+    let result = await topic.createBoard(ctx);
+    ctx.body = result;
 });
 
 router.put('/board', async (ctx) => {
-    const {boardTitle,boardContent,boardNo} = ctx.request.body;
-    let reqData = [boardTitle, boardContent, boardNo];
-    try {
-        const connection = await pool.getConnection(async conn => conn);
-        try {
-            const [rows, field] = await connection.query("UPDATE tb_board SET title=?, content=? WHERE `no`= ?", reqData);
-            ctx.body = "Success"
-        } catch (err) {
-            console.log('Query Error');
-            connection.release();
-        }
-    } catch (err) {
-        console.log('DB Error');
-    }
+    let result = await topic.updateBoard(ctx);
+    ctx.body = result;
 });
 
 router.put('/board/:boardNo/:viewCount', async (ctx) => {
-    let reqData = [ctx.params.viewCount, ctx.params.boardNo];
-
-    try {
-        const connection = await pool.getConnection(async conn => conn);
-        try {
-            const [rows, field] = await connection.query("UPDATE tb_board SET views = ? + 1 WHERE  `no` = ?", reqData);
-            ctx.body = "Success";
-        } catch (err) {
-            connection.release();
-            console.log('Query Error')
-        }
-    } catch (err) {
-        console.log('DB Error')
-    }
+    let result = await topic.countUpBoard(ctx);
+    console.log(result)
+    ctx.body = result;
 })
 
 module.exports = router;
